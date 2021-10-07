@@ -10,4 +10,19 @@ const getPokemon = async (id, setData, setError) => {
   }
 };
 
-export { getPokemon };
+const pokemonPager = async (offset, limit, setData, setPages) => {
+  try {
+    const res = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`
+    );
+    let { count, results } = await res.json();
+
+    setPages(Math.ceil(count / limit));
+    setData(results);
+    //setError(false);
+  } catch (e) {
+    // setError(true);
+  }
+};
+
+export { getPokemon, pokemonPager };

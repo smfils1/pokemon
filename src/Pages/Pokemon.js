@@ -3,7 +3,7 @@ import { getPokemon } from "../utils/pokemon";
 
 const Pokemon = ({ match }) => {
   const { id } = match.params;
-  let [pokemon, setPokemon] = useState({});
+  let [pokemon, setPokemon] = useState(null);
   let [error, setError] = useState(false);
 
   useEffect(() => {
