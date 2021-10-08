@@ -1,10 +1,10 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
 
-export default function NameLink({ name }) {
+export default function NameLink({ name, handleOpen }) {
   return (
-    <Link href={`https://pokeapi.co/api/v2/pokemon/${name}`}>
+    <Button onClick={handleOpen}>
       <Box
         sx={{
           p: 3,
@@ -13,6 +13,6 @@ export default function NameLink({ name }) {
       >
         {name}
       </Box>
-    </Link>
+    </Button>
   );
 }

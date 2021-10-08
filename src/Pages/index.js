@@ -3,6 +3,7 @@ import Pagination from "@mui/material/Pagination";
 import { pokemonPager } from "../utils/pokemon";
 import NameLink from "../components/NameLink";
 import PokemonList from "../components/PokemonList";
+import ModalCard from "../components/ModalCard";
 import { makeStyles } from "@mui/styles";
 
 import backgroundImage from "../assets/bg.jpg";
@@ -28,6 +29,19 @@ const Pokemons = () => {
   const [maxPage, setMaxPage] = useState(0);
   const [pokemons, setPokemons] = useState([]);
 
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = (name) => {
+    setActivePokemon(name);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setActivePokemon("");
+    setOpen(false);
+  };
+  // <Button onClick={handleOpen}>Open modal</Button>;
+
+  const [activePokemon, setActivePokemon] = useState("");
+
   const classes = useStyles();
 
   const changePage = (event, value) => {
@@ -40,13 +54,15 @@ const Pokemons = () => {
 
   return (
     <div className={classes.root}>
-      {/* <Nav /> */}
-
       {maxPage > 0 ? (
         <>
           <PokemonList className={classes.list}>
             {pokemons.map(({ name }, index) => (
-              <NameLink name={name} key={index} />
+              <NameLink
+                name={name}
+                key={index}
+                handleOpen={() => handleOpen(name)}
+              />
             ))}
           </PokemonList>
 
@@ -68,6 +84,9 @@ const Pokemons = () => {
         </>
       ) : (
         <div>There are no Pokemons</div>
+      )}
+      {activePokemon && (
+        <ModalCard handleClose={handleClose} id={activePokemon} open={open} />
       )}
     </div>
   );

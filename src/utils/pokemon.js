@@ -1,9 +1,14 @@
 const getPokemon = async (id, setData, setError) => {
   try {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    let { name, weight, stats, types } = await res.json();
+    let { name, weight, stats, types, sprites } = await res.json();
 
-    setData({ name, weight, stats, types });
+    let sprite = sprites.other["official-artwork"].front_default;
+    stats = stats.map(({ base_stat, stat }) => {
+      return { name: stat.name, value: base_stat };
+    });
+    types = types.map(({ type }) => type.name);
+    setData({ name, sprite, types, weight, stats });
     setError(false);
   } catch (e) {
     setError(true);
@@ -19,10 +24,7 @@ const pokemonPager = async (offset, limit, setData, setPages) => {
 
     setPages(Math.ceil(count / limit));
     setData(results);
-    //setError(false);
-  } catch (e) {
-    // setError(true);
-  }
+  } catch (e) {}
 };
 
 export { getPokemon, pokemonPager };
