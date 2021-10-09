@@ -1,3 +1,9 @@
+const displayName = (rawName) =>
+  rawName
+    .split("-")
+    .map((str) => str[0].toUpperCase() + str.substring(1))
+    .join(" ");
+
 const getPokemon = async (id, setData, setError) => {
   try {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -5,10 +11,13 @@ const getPokemon = async (id, setData, setError) => {
 
     let sprite = sprites.other["official-artwork"].front_default;
     stats = stats.map(({ base_stat, stat }) => {
-      return { name: stat.name, value: base_stat };
+      return {
+        name: displayName(stat.name),
+        value: base_stat,
+      };
     });
     types = types.map(({ type }) => type.name);
-    setData({ name, sprite, types, weight, stats });
+    setData({ name: displayName(name), sprite, types, weight, stats });
     setError(false);
   } catch (e) {
     setError(true);
@@ -27,4 +36,4 @@ const pokemonPager = async (offset, limit, setData, setPages) => {
   } catch (e) {}
 };
 
-export { getPokemon, pokemonPager };
+export { getPokemon, pokemonPager, displayName };

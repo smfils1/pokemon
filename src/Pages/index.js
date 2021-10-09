@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import { pokemonPager } from "../utils/pokemon";
-import NameLink from "../components/NameLink";
+import NameButton from "../components/NameButton";
 import PokemonList from "../components/PokemonList";
 import ModalCard from "../components/ModalCard";
 import { makeStyles } from "@mui/styles";
 
 import backgroundImage from "../assets/bg.jpg";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     backgroundImage: `url(${backgroundImage})`,
     backgroundRepeat: "no-repeat",
@@ -22,14 +22,15 @@ const useStyles = makeStyles((theme) => ({
   list: {
     marginTop: 100,
   },
-}));
+});
 
 const Pokemons = () => {
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(0);
   const [pokemons, setPokemons] = useState([]);
-
+  const [activePokemon, setActivePokemon] = useState("");
   const [open, setOpen] = React.useState(false);
+
   const handleOpen = (name) => {
     setActivePokemon(name);
     setOpen(true);
@@ -38,13 +39,10 @@ const Pokemons = () => {
     setActivePokemon("");
     setOpen(false);
   };
-  // <Button onClick={handleOpen}>Open modal</Button>;
-
-  const [activePokemon, setActivePokemon] = useState("");
 
   const classes = useStyles();
 
-  const changePage = (event, value) => {
+  const changePage = (_, value) => {
     setPage(value);
   };
 
@@ -57,16 +55,15 @@ const Pokemons = () => {
       {maxPage > 0 ? (
         <>
           <PokemonList className={classes.list}>
-            {pokemons.map(({ name }, index) => (
-              <NameLink
+            {pokemons.map(({ name }) => (
+              <NameButton
                 name={name}
-                key={index}
+                key={name}
                 handleOpen={() => handleOpen(name)}
               />
             ))}
           </PokemonList>
 
-          {/* <pre>{JSON.stringify(pokemons, null, 2)}</pre> */}
           <Pagination
             className={classes.footer}
             sx={{

@@ -14,7 +14,6 @@ const useStyles = makeStyles({
 
 const PokemonList = ({ children, className }) => {
   const classes = useStyles();
-
   return <div className={clsx(classes.root, className)}>{children}</div>;
 };
 
