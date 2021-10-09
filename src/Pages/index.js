@@ -5,6 +5,8 @@ import NameButton from "../components/NameButton";
 import PokemonList from "../components/PokemonList";
 import ModalCard from "../components/ModalCard";
 import { makeStyles } from "@mui/styles";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import backgroundImage from "../assets/bg.jpg";
 
@@ -30,6 +32,9 @@ const Pokemons = () => {
   const [pokemons, setPokemons] = useState([]);
   const [activePokemon, setActivePokemon] = useState("");
   const [open, setOpen] = React.useState(false);
+
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleOpen = (name) => {
     setActivePokemon(name);
@@ -65,18 +70,16 @@ const Pokemons = () => {
           </PokemonList>
 
           <Pagination
-            className={classes.footer}
             sx={{
-              p: 2,
+              p: 1,
               m: 3,
               bgcolor: "white",
             }}
             variant="outlined"
             count={maxPage}
-            showFirstButton
-            showLastButton
             page={page}
             onChange={changePage}
+            size={isSmall ? "small" : "medium"}
           />
         </>
       ) : (
