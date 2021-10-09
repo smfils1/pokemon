@@ -5,6 +5,8 @@ import TypeList from "../components/TypeList";
 import { getPokemon } from "../utils/pokemon";
 import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
+import CloseIcon from "@mui/icons-material/Close";
 
 const useStyles = makeStyles({
   content: {
@@ -26,8 +28,19 @@ const style = {
   width: 400,
   bgcolor: "background.paper",
   boxShadow: 24,
-  p: 4,
+  p: 3,
 };
+
+const ScrollableBox = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+  [theme.breakpoints.down("md")]: {
+    overflowY: "scroll",
+    height: "100%",
+    maxHeight: 600,
+  },
+}));
 
 const ModalCard = ({ id, open, handleClose }) => {
   let [pokemon, setPokemon] = useState(null);
@@ -47,7 +60,9 @@ const ModalCard = ({ id, open, handleClose }) => {
       aria-describedby="modal-modal-description"
       sx={{ backgroundColor: "rgba(0,0,0,0.85)" }}
     >
-      <Box sx={style}>
+      <ScrollableBox sx={style}>
+        <CloseIcon onClick={handleClose} sx={{ cursor: "pointer", m: 2 }} />
+
         {!error && pokemon ? (
           <div className={classes.content}>
             <Typography variant="h5" gutterBottom component="div">
@@ -73,7 +88,7 @@ const ModalCard = ({ id, open, handleClose }) => {
         ) : (
           <div>Not available</div>
         )}
-      </Box>
+      </ScrollableBox>
     </Modal>
   );
 };

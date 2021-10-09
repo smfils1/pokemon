@@ -18,6 +18,7 @@ const TypeList = ({ types }) => {
       style={{
         display: "flex",
         flexWrap: "wrap",
+        justifyContent: "center",
         gap: 12,
       }}
     >
