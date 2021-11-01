@@ -32,11 +32,12 @@ const style = {
 };
 
 const ScrollableBox = styled(Box)(({ theme }) => ({
+  overflowY: "scroll",
+  maxHeight: "100%",
   [theme.breakpoints.down("sm")]: {
     width: "100%",
   },
   [theme.breakpoints.down("md")]: {
-    overflowY: "scroll",
     height: "100%",
     maxHeight: 600,
   },

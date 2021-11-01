@@ -9,6 +9,11 @@ function App() {
       <Nav />
       <Switch>
         <Route exact path="/" render={(props) => <HomePage {...props} />} />
+        <Route
+          exact
+          path="/:page"
+          render={(props) => <HomePage {...props} />}
+        />
         <Route render={() => <Redirect to="/" />} />
       </Switch>
     </div>

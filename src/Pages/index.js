@@ -7,6 +7,7 @@ import ModalCard from "../components/ModalCard";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useParams, useHistory } from "react-router-dom";
 
 import backgroundImage from "../assets/bg.jpg";
 
@@ -27,13 +28,17 @@ const useStyles = makeStyles({
 });
 
 const Pokemons = () => {
-  const [page, setPage] = useState(1);
+  const { page: initialPage } = useParams();
+
+  const [page, setPage] = useState(initialPage || 1);
   const [maxPage, setMaxPage] = useState(0);
   const [pokemons, setPokemons] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [activePokemon, setActivePokemon] = useState("");
   const [open, setOpen] = React.useState(false);
 
   const theme = useTheme();
+  const history = useHistory();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleOpen = (name) => {
@@ -49,15 +54,22 @@ const Pokemons = () => {
 
   const changePage = (_, value) => {
     setPage(value);
+    history.push(`/${value}`);
   };
 
   useEffect(() => {
-    pokemonPager(25 * (page - 1), 25, setPokemons, setMaxPage);
+    pokemonPager({
+      offset: 25 * (page - 1),
+      limit: 25,
+      setData: setPokemons,
+      setPages: setMaxPage,
+      setLoading,
+    });
   }, [page]);
 
   return (
     <div className={classes.root}>
-      {maxPage > 0 ? (
+      {maxPage > 0 && !loading ? (
         <>
           <PokemonList className={classes.list}>
             {pokemons.map(({ name }) => (
@@ -77,7 +89,7 @@ const Pokemons = () => {
             }}
             variant="outlined"
             count={maxPage}
-            page={page}
+            page={parseInt(page, 10)}
             onChange={changePage}
             size={isSmall ? "small" : "medium"}
           />

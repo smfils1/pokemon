@@ -24,16 +24,25 @@ const getPokemon = async (id, setData, setError) => {
   }
 };
 
-const pokemonPager = async (offset, limit, setData, setPages) => {
+const pokemonPager = async ({
+  offset,
+  limit,
+  setData,
+  setPages,
+  setLoading,
+}) => {
+  setLoading(true);
   try {
     const res = await fetch(
       `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`
     );
     let { count, results } = await res.json();
-
+    setLoading(false);
     setPages(Math.ceil(count / limit));
     setData(results);
-  } catch (e) {}
+  } catch (e) {
+    setLoading(false);
+  }
 };
 
 export { getPokemon, pokemonPager, displayName };
